@@ -1,9 +1,9 @@
 let playerScore = 0;
 let computerScore = 0;
 let roundNumber = 0;
-let singleMode = false;
+let mode = 0;
 const multibtn = document.getElementById("Multi-mode");
-const modeBtn = document.getElementById("single-mode");
+const singleBtn = document.getElementById("single-mode");
 const roundNumberCounter_p = document.querySelector(".round-number-counter ");
 const playerScore_span = document.getElementById("player-score");
 const computerScore_span = document.getElementById("computer-score");
@@ -13,63 +13,39 @@ const rock_div = document.getElementById("rock");
 const paper_div = document.getElementById("paper");
 const scissors_div = document.getElementById("scissors");
 
-    function startGame(){
-        multibtn.addEventListener("click", function(){
-            singleMode = false;
-            resetGame();
-            roundNumberCounter_p.innerHTML = roundNumber;
-            alert("Round 1 of 3");
-            });
+    // function startGame(){
+    //     multibtn.addEventListener("click", function(){
+    //         singleMode = false;
+    //         resetGame();
+    //         roundNumberCounter_p.innerHTML = roundNumber;
+    //         alert("Round 1 of 3");
+    //         });
     
-    }
+    // }
 
-    function modeToggle(){ 
-        modeBtn.addEventListener("click", function(){
-            singleMode = true;
-            resetGame();
+    // function modeToggle(){ 
+    //     modeBtn.addEventListener("click", function(){
+    //         singleMode = true;
+    //         resetGame();
 
-            if( singleMode == true ){
-                roundNumberCounter_p.innerHTML = roundNumber;
-                alert("Start");
-            }
+    //         if( singleMode == true ){
+    //             roundNumberCounter_p.innerHTML = roundNumber;
+    //             alert("Start");
+    //         }
                 
             
-        });
-        return;
-    }
-    
-    function roundCheckerW(userChoice, computerChoice ){
-        playerScore_span.innerHTML = playerScore;
-        computerScore_span.innerHTML = computerScore;
-        
-        if (singleMode == true) {
-            result_p.innerHTML = userChoice + " beats " + computerChoice + ". YOU WIN";
-           
-        }
-        else if (singleMode == false){
-            result_p.innerHTML = userChoice + " wins you game" ;
-            roundLimiterW();
-            
-        }
-        
-    }
-    
-    function roundCheckerL(userChoice, computerChoice){
-        playerScore_span.innerHTML = playerScore;
-        computerScore_span.innerHTML = computerScore;
-        
-        if (singleMode == true){
-            result_p.innerHTML = userChoice + " loses to " + computerChoice + ". YOU LOSE";
-        }
-        else if (singleMode == false){
-            result_p.innerHTML = userChoice + " lose you game" ;
-            roundLimiterL();
-            
-        }
+    //     });
+    //     return;
+    // }
 
-    }
-     
+    
 
+    
+   
+
+// Single player game
+function singleMode(){
+    let mode = 1;
 
     function win(userChoice, computerChoice){
         playerScore++;
@@ -92,44 +68,57 @@ const scissors_div = document.getElementById("scissors");
         roundNumber ++;
         roundNumberCounter_p.innerHTML = roundNumber;
         result_p.innerHTML = userChoice + " the same " + computerChoice + ". Draw";
-    
+       
     }
-
-    function roundLimiterL(){
-        if (roundNumber == 3 && playerScore == computerScore ){
-            console.log("draw")
-        }
-       while (roundNumber == 3 && computerScore > playerScore) {
-          
-           setTimeout(() => {
-            resetGame();
-           }, 5000);
-           alert('You lose the rounds game over')
-           break;
-       }   
-    }
-
-    function roundLimiterW(){
-        if (roundNumber == 3 && playerScore == computerScore ){
-            console.log("draw")
-        }
-        while (roundNumber == 3 && playerScore > computerScore) {
-           
-            setTimeout(() => {
-             resetGame();
-            }, 5000);
-            alert('You Win the rounds game over')
-            break;
-        }   
-     }
-
-
-function getComputerChoice(){
-    const choices = ['rock', 'paper', 'scissors'];
-    const randomNumber = Math.floor(Math.random() * 3);
-    return choices[randomNumber];
+    win();
+    lose();
+    draw();
 }
+   
+// end
 
+
+// Multi round game
+function bestofthree(){
+    function roundCheckerW(userChoice, computerChoice ){
+        playerScore_span.innerHTML = playerScore;
+        computerScore_span.innerHTML = computerScore;
+        
+        if (singleMode == true) {
+            result_p.innerHTML = userChoice + " beats " + computerChoice + ". YOU WIN";
+           
+        }
+        else if (singleMode == false){
+            result_p.innerHTML = userChoice + " wins you game" ;
+            roundLimiterW();
+        } 
+    }
+    function roundCheckerL(userChoice, computerChoice){
+        playerScore_span.innerHTML = playerScore;
+        computerScore_span.innerHTML = computerScore;
+        
+        if (singleMode == true){
+            result_p.innerHTML = userChoice + " loses to " + computerChoice + ". YOU LOSE";
+        }
+        else if (singleMode == false){
+            result_p.innerHTML = userChoice + " lose you game" ;
+            roundLimiterL(); 
+        }
+}
+    function draw(userChoice, computerChoice){  
+    roundNumber ++;
+    roundNumberCounter_p.innerHTML = roundNumber;
+    result_p.innerHTML = userChoice + " the same " + computerChoice + ". Draw";
+   
+}
+    roundCheckerL();
+    roundCheckerW();
+    draw();
+}
+//  end
+
+
+// Reset the Game
 function resetGame(){
     playerScore = 0;
     computerScore = 0;
@@ -140,9 +129,45 @@ function resetGame(){
     result_p.innerHTML = 'Make Your Selection!' 
 
 }
+// end
 
 
+// Round limiter for games
+function roundLimiterL(){
+    if (roundNumber == 3 && playerScore == computerScore ){
+        console.log("draw")
+    }
+   while (roundNumber == 3 && computerScore > playerScore) {
+      
+       setTimeout(() => {
+        resetGame();
+       }, 5000);
+       alert('You lose the rounds game over')
+       break;
+   }   
+}
+function roundLimiterW(){
+    if (roundNumber == 3 && playerScore == computerScore ){
+        console.log("draw")
+    }
+    while (roundNumber == 3 && playerScore > computerScore) {
+       
+        setTimeout(() => {
+         resetGame();
+        }, 5000);
+        alert('You Win the rounds game over')
+        break;
+    }   
+ }
+// end
 
+
+//  User choice and computer choice functions
+function getComputerChoice(){
+    const choices = ['rock', 'paper', 'scissors'];
+    const randomNumber = Math.floor(Math.random() * 3);
+    return choices[randomNumber];
+}
 function game(userChoice){
     const computerChoice = getComputerChoice();
     switch (userChoice + computerChoice){
@@ -163,6 +188,9 @@ function game(userChoice){
             break;  
     }
 } 
+// end
+
+
 
 function main() {
     rock_div.addEventListener('click', function(){
@@ -175,7 +203,8 @@ function main() {
         game("scissors");
     })
 }
-startGame();
-modeToggle();
+
+
+startGame()
 
 main();
